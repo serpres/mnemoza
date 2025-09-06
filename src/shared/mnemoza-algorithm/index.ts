@@ -1,0 +1,1 @@
+export { MnemozaAlgorithm } from './model'

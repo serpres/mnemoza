@@ -70,6 +70,14 @@ export const PWAPrompt: React.FC = () => {
               <Wifi size={16} className='text-green-500' />
               <span className='text-sm text-gray-600'>Полная работа без интернета</span>
             </div>
+            
+            {pwaModel.isIOS && (
+              <div className='bg-blue-50 border border-blue-200 rounded-lg p-3 mb-3'>
+                <p className='text-sm text-blue-800'>
+                  <strong>Для iPhone:</strong> Нажмите кнопку "Поделиться" внизу экрана, затем выберите "На экран Домой"
+                </p>
+              </div>
+            )}
 
             <div className='flex gap-3'>
               <button

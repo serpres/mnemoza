@@ -1,86 +1,16 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/src/assets/logo.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-
-    <meta name="theme-color" content="#3b82f6" />
-    <meta
-      name="description"
-      content="Полностью автономная система интервальных повторений для эффективного запоминания"
-    />
-
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="apple-mobile-web-app-title" content="Mnemoza" />
-    <link rel="apple-touch-icon" href="/src/assets/logo.png" />
-
-    <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="application-name" content="Mnemoza" />
-    <meta name="msapplication-TileColor" content="#3b82f6" />
-    <meta name="msapplication-config" content="/browserconfig.xml" />
-
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-    <meta http-equiv="Pragma" content="no-cache" />
-    <meta http-equiv="Expires" content="0" />
-
-    <style>
-      #root {
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: #f9fafb;
-      }
-      .preloader {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 1rem;
-      }
-      .spinner {
-        width: 40px;
-        height: 40px;
-        border: 4px solid #e5e7eb;
-        border-top: 4px solid #3b82f6;
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-      }
-      @keyframes spin {
-        0% {
-          transform: rotate(0deg);
-        }
-        100% {
-          transform: rotate(360deg);
-        }
-      }
-    </style>
-
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mnemoza - Система интервальных повторений</title>
-  </head>
-  <body>
-    <div id="root">
-      <div class="preloader">
-        <div class="spinner"></div>
-        <div style="color: #6b7280; font-family: system-ui, sans-serif">Загрузка Mnemoza...</div>
-      </div>
-    </div>
-
-    <!-- Скрипт для предотвращения скроллинга на iOS -->
+    <meta http-equiv="refresh" content="0; url=app.html">
     <script>
-      // Предотвращаем скроллинг на iOS в PWA режиме
-      document.addEventListener(
-        'touchmove',
-        function (e) {
-          if (e.scale !== 1) {
-            e.preventDefault()
-          }
-        },
-        { passive: false }
-      )
+        // Immediate redirect for better UX
+        window.location.replace('app.html');
     </script>
-
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+</head>
+<body>
+    <p>Перенаправление на <a href="app.html">Mnemoza</a>...</p>
+</body>
 </html>

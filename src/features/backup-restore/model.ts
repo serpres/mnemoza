@@ -30,7 +30,7 @@ export const useDataManagementModel = (onDataImported?: () => void): DataManagem
 
   const exportAllData = useCallback(async () => {
     try {
-      statusModel.showStatus('info', 'Начинаем экспорт данных...')
+      statusModel.showStatus('info', 'Начните экспорт данных...')
 
       const decks = await db.getDecks()
       const allCards: MnemozaCard[] = []
@@ -73,7 +73,7 @@ export const useDataManagementModel = (onDataImported?: () => void): DataManagem
   const importData = useCallback(
     async (file: File) => {
       try {
-        statusModel.showStatus('info', 'Начинаем импорт данных...')
+        statusModel.showStatus('info', 'Начните импорт данных...')
 
         const text = await file.text()
         const importData: ExportData = JSON.parse(text)
@@ -92,13 +92,27 @@ export const useDataManagementModel = (onDataImported?: () => void): DataManagem
             const existingDeck = existingDecks.find((d: Deck) => d.id === deck.id)
 
             if (!existingDeck) {
-              await db.createDeck({
+              // Создаем колоду с оригинальным ID
+              await db.createDeckWithId({
+                id: deck.id,
                 name: deck.name,
                 description: deck.description,
                 createdAt: new Date(deck.createdAt),
                 updatedAt: new Date(deck.updatedAt),
               })
               importedDecks++
+            } else {
+              // Обновляем существующую колоду если импорт новее
+              const importDate = new Date(deck.updatedAt || 0)
+              const existingDate = new Date(existingDeck.updatedAt || 0)
+              
+              if (importDate > existingDate) {
+                await db.updateDeck(deck.id, {
+                  name: deck.name,
+                  description: deck.description,
+                  updatedAt: new Date(deck.updatedAt),
+                })
+              }
             }
           } catch (error) {
             console.warn(`Ошибка импорта колоды ${deck.name}:`, error)
@@ -128,7 +142,9 @@ export const useDataManagementModel = (onDataImported?: () => void): DataManagem
                 updatedCards++
               }
             } else {
-              await db.createCard({
+              // Создаем карточку с оригинальным ID
+              const newCard: MnemozaCard = {
+                id: card.id,
                 deckId: card.deckId,
                 front: card.front,
                 back: card.back,
@@ -136,8 +152,12 @@ export const useDataManagementModel = (onDataImported?: () => void): DataManagem
                 interval: card.interval,
                 repetitions: card.repetitions,
                 isNew: card.isNew,
-                nextReviewDate: card.nextReviewDate,
-              })
+                nextReviewDate: new Date(card.nextReviewDate),
+                createdAt: new Date(card.createdAt || new Date()),
+                updatedAt: new Date(card.updatedAt || new Date()),
+              }
+              
+              await db.createCardWithId(newCard)
               importedCards++
             }
           } catch (error) {

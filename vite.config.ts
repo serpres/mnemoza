@@ -5,6 +5,7 @@ import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
   base: '/mnemoza/',
+  root: '.',
   resolve: {
     alias: {
       '@': '/src',
@@ -31,7 +32,7 @@ export default defineConfig({
         skipWaiting: true,
         clientsClaim: true,
         cleanupOutdatedCaches: true,
-        navigateFallback: 'index.html',
+        navigateFallback: 'app.html',
         navigateFallbackDenylist: [/^\/_/, /\/[^/?]+\.[^/]+$/],
       },
       manifest: {
@@ -42,24 +43,24 @@ export default defineConfig({
         background_color: '#ffffff',
         display: 'standalone',
         orientation: 'portrait-primary',
-        scope: '/',
-        start_url: '/',
+        scope: '/mnemoza/',
+        start_url: '.', // Use current page URL instead of fixed path (fixes iPhone Add-to-Home issue)
         lang: 'ru',
         icons: [
           {
-            src: 'logo-192.png',
+            src: '/mnemoza/logo-192.png',
             sizes: '192x192',
             type: 'image/png',
             purpose: 'any',
           },
           {
-            src: 'logo-512.png',
+            src: '/mnemoza/logo-512.png',
             sizes: '512x512',
             type: 'image/png',
             purpose: 'any',
           },
           {
-            src: 'logo-192.png',
+            src: '/mnemoza/logo-192.png',
             sizes: '192x192',
             type: 'image/png',
             purpose: 'maskable',
@@ -71,7 +72,7 @@ export default defineConfig({
             name: 'Создать колоду',
             short_name: 'Новая колода',
             description: 'Создать новую колоду карточек',
-            url: '/?action=create-deck',
+            url: '/mnemoza/?action=create-deck',
           },
         ],
       },
@@ -79,7 +80,7 @@ export default defineConfig({
       devOptions: {
         enabled: true, // Включаем SW в режиме разработки
         type: 'module',
-        navigateFallback: 'index.html',
+        navigateFallback: 'app.html',
       },
       disable: false,
       selfDestroying: false,
@@ -88,6 +89,10 @@ export default defineConfig({
   build: {
     target: 'esnext',
     rollupOptions: {
+      input: {
+        app: 'app.html',
+        index: 'index.html',
+      },
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom'],
@@ -95,5 +100,7 @@ export default defineConfig({
         },
       },
     },
+    copyPublicDir: true,
   },
+  publicDir: 'public',
 })

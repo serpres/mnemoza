@@ -74,16 +74,16 @@ export const StudySession: React.FC<StudySessionProps> = ({ deck, onBack }) => {
 
   return (
     <motion.div
-      className='max-w-full sm:max-w-2xl lg:max-w-4xl mx-auto p-2 sm:p-3 lg:p-4'
+      className='max-w-full sm:max-w-2xl lg:max-w-4xl mx-auto p-2 sm:p-3 lg:p-4 pb-20 md:pb-4'
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
     >
       {/* Header */}
-      <div className='bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl p-6 mb-4 text-white'>
+      <div className='bg-white border-b border-gray-200 p-4 mb-4 md:rounded-xl md:bg-gradient-to-r md:from-blue-600 md:to-purple-600 md:text-white'>
         <div className='flex items-center justify-between mb-3'>
           <motion.button
             onClick={onBack}
-            className='flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 text-white/80 hover:text-white hover:bg-white/20 rounded-lg transition-colors cursor-pointer'
+            className='flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer md:text-white/80 md:hover:text-white md:hover:bg-white/20'
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -91,14 +91,14 @@ export const StudySession: React.FC<StudySessionProps> = ({ deck, onBack }) => {
           </motion.button>
 
           <div className='text-center'>
-            <h1 className='text-lg sm:text-xl font-bold'>{deck.name}</h1>
-            <p className='text-blue-100 opacity-90 text-sm'>
+            <h1 className='text-lg sm:text-xl font-bold text-gray-900 md:text-white'>{deck.name}</h1>
+            <p className='text-gray-600 text-sm md:text-blue-100 md:opacity-90'>
               Карточка {studyModel.studySessionModel.currentCard ? 1 : 0} из {1}
             </p>
           </div>
 
           <div className='text-right'>
-            <div className='flex items-center gap-1 text-blue-100'>
+            <div className='flex items-center gap-1 text-gray-600 md:text-blue-100'>
               <Clock size={14} />
               <span className='text-xs font-medium'>
                 {studyModel.formatTime(studyModel.studySessionModel.sessionStats.startTime)}
@@ -107,9 +107,9 @@ export const StudySession: React.FC<StudySessionProps> = ({ deck, onBack }) => {
           </div>
         </div>
 
-        <div className='w-full bg-white/20 rounded-full h-2 overflow-hidden'>
+        <div className='w-full bg-gray-200 rounded-full h-2 overflow-hidden md:bg-white/20'>
           <motion.div
-            className='bg-gradient-to-r from-yellow-400 to-orange-500 h-full rounded-full'
+            className='bg-gradient-to-r from-blue-500 to-purple-500 h-full rounded-full md:from-yellow-400 md:to-orange-500'
             initial={{ width: 0 }}
             animate={{ width: `${studyModel.studySessionModel.progress}%` }}
             transition={{ duration: 0.5 }}
@@ -149,7 +149,7 @@ export const StudySession: React.FC<StudySessionProps> = ({ deck, onBack }) => {
       </div>
 
       <motion.div
-        className='bg-white rounded-xl border border-gray-100 shadow-lg p-4 sm:p-6 mb-4 min-h-[250px] sm:min-h-[300px] flex flex-col justify-center'
+        className='bg-white rounded-xl border border-gray-100 shadow-lg p-4 sm:p-6 mb-4 min-h-[250px] sm:min-h-[300px] flex flex-col justify-center cursor-pointer'
         key={studyModel.studySessionModel.currentCard?.id}
         initial={{ opacity: 0, scale: 0.9, rotateY: -10 }}
         animate={{ 
@@ -158,6 +158,7 @@ export const StudySession: React.FC<StudySessionProps> = ({ deck, onBack }) => {
           rotateY: studyModel.studySessionModel.showAnswer ? 0 : -10
         }}
         transition={{ duration: 0.5, type: "spring" }}
+        onClick={!studyModel.studySessionModel.showAnswer ? studyModel.studySessionModel.showCardAnswer : undefined}
       >
         <div className='text-center'>
           {studyModel.studySessionModel.currentCard?.isNew && (
@@ -195,27 +196,29 @@ export const StudySession: React.FC<StudySessionProps> = ({ deck, onBack }) => {
 
           {!studyModel.studySessionModel.showAnswer && (
             <div className='text-xs sm:text-sm text-gray-500 mt-4 sm:mt-6'>
-              Нажмите "Показать ответ" чтобы увидеть обратную сторону
+              Нажмите на карточку или кнопку "Показать ответ" чтобы увидеть обратную сторону
             </div>
           )}
         </div>
       </motion.div>
 
-      {/* Action Buttons */}
+      {/* Action Buttons - Fixed at bottom on mobile */}
       {!studyModel.studySessionModel.showAnswer ? (
-        <div className='text-center'>
-          <motion.button
-            onClick={studyModel.studySessionModel.showCardAnswer}
-            className='bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-bold transition-all text-base sm:text-lg shadow-lg cursor-pointer'
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Показать ответ
-          </motion.button>
+        <div className='fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 z-40 md:relative md:border-t-0 md:bg-transparent md:p-0'>
+          <div className='text-center'>
+            <motion.button
+              onClick={studyModel.studySessionModel.showCardAnswer}
+              className='bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-bold transition-all text-base sm:text-lg shadow-lg cursor-pointer w-full max-w-sm'
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Показать ответ
+            </motion.button>
+          </div>
         </div>
       ) : (
         <motion.div
-          className='space-y-3 sm:space-y-4'
+          className='fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 z-40 md:relative md:border-t-0 md:bg-transparent md:p-0'
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
         >
@@ -302,7 +305,7 @@ export const StudySession: React.FC<StudySessionProps> = ({ deck, onBack }) => {
 
           {studyModel.studySessionModel.studying && (
             <motion.div
-              className='text-center text-gray-500 flex items-center justify-center gap-2'
+              className='text-center text-gray-500 flex items-center justify-center gap-2 mt-3'
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
             >

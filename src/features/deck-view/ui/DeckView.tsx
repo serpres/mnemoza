@@ -65,25 +65,25 @@ export const DeckView: React.FC<DeckViewProps> = ({ deck, onBack, onStartStudy }
 
   return (
     <motion.div
-      className='max-w-full sm:max-w-2xl lg:max-w-4xl mx-auto p-2 sm:p-4 lg:p-6'
+      className='max-w-full sm:max-w-2xl lg:max-w-4xl mx-auto p-2 sm:p-4 lg:p-6 pb-20 md:pb-6'
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
     >
       {/* Header */}
-      <div className='bg-gradient-to-br from-indigo-600 via-purple-600 to-blue-800 rounded-xl p-3 sm:p-4 mb-4 text-white'>
+      <div className='bg-white border-b border-gray-200 p-3 sm:p-4 mb-4 md:rounded-xl md:bg-gradient-to-br md:from-indigo-600 md:via-purple-600 md:to-blue-800 md:text-white'>
         <div className='flex items-center gap-3'>
           <motion.button
             onClick={onBack}
-            className='flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 text-white/80 hover:text-white hover:bg-white/20 rounded-lg transition-colors cursor-pointer'
+            className='flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer md:text-white/80 md:hover:text-white md:hover:bg-white/20'
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
             <ArrowLeft size={18} />
           </motion.button>
           <div className='flex-1'>
-            <h1 className='text-2xl sm:text-3xl font-bold'>{deck.name}</h1>
+            <h1 className='text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 md:text-white'>{deck.name}</h1>
             {deck.description && (
-              <p className='text-indigo-100 opacity-90 mt-2 text-lg'>{deck.description}</p>
+              <p className='text-gray-600 mt-1 text-sm md:text-lg md:text-indigo-100 md:opacity-90'>{deck.description}</p>
             )}
           </div>
         </div>

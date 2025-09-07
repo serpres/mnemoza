@@ -43,12 +43,13 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({
 
   return (
     <motion.div
-      className={`fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-2 py-2 z-40 md:hidden ${className}`}
+      className={`fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-2 py-3 z-40 md:hidden ${className}`}
       initial={{ y: 100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.3 }}
+      style={{ paddingBottom: 'max(12px, env(safe-area-inset-bottom))' }}
     >
-      <div className="flex justify-around items-center max-w-sm mx-auto">
+      <div className="flex justify-center items-center max-w-sm mx-auto">
         {navItems.map((item) => {
           const Icon = item.icon
           return (

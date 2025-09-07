@@ -69,6 +69,12 @@ export class MnemozaDatabase {
     return newDeck
   }
 
+  async createDeckWithId(deck: Deck): Promise<Deck> {
+    const db = this.ensureDB()
+    await db.add('decks', deck)
+    return deck
+  }
+
   async getDecks(): Promise<Deck[]> {
     const db = this.ensureDB()
     return await db.getAll('decks')
@@ -79,10 +85,21 @@ export class MnemozaDatabase {
     return await db.get('decks', id)
   }
 
-  async updateDeck(deck: Deck): Promise<void> {
+  async updateDeck(id: string, updates: Partial<Omit<Deck, 'id'>>): Promise<void> {
     const db = this.ensureDB()
-    deck.updatedAt = new Date()
-    await db.put('decks', deck)
+    const existingDeck = await this.getDeck(id)
+    if (!existingDeck) {
+      throw new Error(`Deck with id ${id} not found`)
+    }
+
+    const updatedDeck: Deck = {
+      ...existingDeck,
+      ...updates,
+      id,
+      updatedAt: new Date(),
+    }
+
+    await db.put('decks', updatedDeck)
   }
 
   async deleteDeck(id: string): Promise<void> {
@@ -110,6 +127,12 @@ export class MnemozaDatabase {
 
     await db.add('cards', newCard)
     return newCard
+  }
+
+  async createCardWithId(card: MnemozaCard): Promise<MnemozaCard> {
+    const db = this.ensureDB()
+    await db.add('cards', card)
+    return card
   }
 
   async getCard(id: string): Promise<MnemozaCard | undefined> {

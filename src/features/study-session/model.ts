@@ -18,6 +18,7 @@ interface StudyState {
   progress: number
   currentCard: MnemozaCard | undefined
   hasCards: boolean
+  forgottenCards: MnemozaCard[]
 }
 
 interface StudyActions {
@@ -66,6 +67,7 @@ export const useStudySessionModel = (deckId: string): StudySessionModel => {
   const [showAnswer, setShowAnswer] = useState(false)
   const [loading, setLoading] = useState(true)
   const [studying, setStudying] = useState(false)
+  const [forgottenCards, setForgottenCards] = useState<MnemozaCard[]>([])
   const [sessionStats, setSessionStats] = useState({
     cardsStudied: 0,
     correct: 0,
@@ -112,6 +114,11 @@ export const useStudySessionModel = (deckId: string): StudySessionModel => {
 
         await db.updateCard(updatedCard)
 
+        // Если карточка была забыта (AGAIN), добавляем её в список забытых
+        if (result === ReviewResultValues.AGAIN) {
+          setForgottenCards(prev => [...prev, currentCard])
+        }
+
         setSessionStats(prev => ({
           ...prev,
           cardsStudied: prev.cardsStudied + 1,
@@ -122,6 +129,15 @@ export const useStudySessionModel = (deckId: string): StudySessionModel => {
 
         const nextIndex = currentCardIndex + 1
         if (nextIndex >= cards.length) {
+          // Если есть забытые карточки, перетасовываем их для повторения
+          if (forgottenCards.length > 0) {
+            const shuffledForgotten = [...forgottenCards].sort(() => Math.random() - 0.5)
+            setCards(shuffledForgotten)
+            setCurrentCardIndex(0)
+            setForgottenCards([])
+            setShowAnswer(false)
+            return { sessionCompleted: false }
+          }
           return { sessionCompleted: true }
         }
 
@@ -135,7 +151,7 @@ export const useStudySessionModel = (deckId: string): StudySessionModel => {
         setStudying(false)
       }
     },
-    [studying, cards, currentCardIndex]
+    [studying, cards, currentCardIndex, forgottenCards]
   )
 
   const showCardAnswer = useCallback(() => {
@@ -158,5 +174,6 @@ export const useStudySessionModel = (deckId: string): StudySessionModel => {
     showCardAnswer,
     loadStudyCards,
     hasCards: cards.length > 0,
+    forgottenCards,
   }
 }

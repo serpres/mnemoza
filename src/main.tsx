@@ -9,7 +9,7 @@ rootElement.innerHTML = ''
 createRoot(rootElement).render(<App />)
 
 if ('serviceWorker' in navigator) {
-  const wb = new Workbox('/sw.js')
+  const wb = new Workbox('/mnemoza/sw.js')
 
   wb.addEventListener('controlling', () => {
     window.location.reload()

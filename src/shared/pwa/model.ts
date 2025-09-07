@@ -12,6 +12,7 @@ interface PWAState {
   isOnline: boolean
   showInstallPrompt: boolean
   installPrompt: BeforeInstallPromptEvent | null
+  isIOS: boolean
 }
 
 interface PWAActions {
@@ -29,6 +30,7 @@ export const usePWAModel = (): PWAModel => {
   const [isOnline, setIsOnline] = useState(navigator.onLine)
   const [showInstallPrompt, setShowInstallPrompt] = useState(false)
   const [installPrompt, setInstallPrompt] = useState<BeforeInstallPromptEvent | null>(null)
+  const [isIOS, setIsIOS] = useState(false)
 
   useEffect(() => {
     const checkInstalled = () => {
@@ -37,7 +39,15 @@ export const usePWAModel = (): PWAModel => {
       }
     }
 
+    const detectIOS = () => {
+      const userAgent = navigator.userAgent.toLowerCase()
+      const isIOSDevice = /iphone|ipad|ipod/.test(userAgent)
+      const isSafari = /safari/.test(userAgent) && !/chrome/.test(userAgent)
+      setIsIOS(isIOSDevice && isSafari)
+    }
+
     checkInstalled()
+    detectIOS()
 
     const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault()
@@ -73,6 +83,13 @@ export const usePWAModel = (): PWAModel => {
     if (!installPrompt) return
 
     try {
+      // For iOS Safari, ensure we're on the correct URL before installation
+      // This fixes the issue where Safari ignores start_url and uses installation page URL
+      if (isIOS) {
+        // Push the correct URL to history without triggering navigation
+        history.pushState({}, '', '/mnemoza/')
+      }
+
       await installPrompt.prompt()
       const { outcome } = await installPrompt.userChoice
       
@@ -86,7 +103,7 @@ export const usePWAModel = (): PWAModel => {
     } catch (error) {
       console.error('Ошибка установки PWA:', error)
     }
-  }, [installPrompt])
+  }, [installPrompt, isIOS])
 
   const handleInstall = useCallback(async () => {
     await installApp()
@@ -105,6 +122,7 @@ export const usePWAModel = (): PWAModel => {
     isOnline,
     showInstallPrompt,
     installPrompt,
+    isIOS,
     installApp,
     handleInstall,
     dismissInstallPrompt,

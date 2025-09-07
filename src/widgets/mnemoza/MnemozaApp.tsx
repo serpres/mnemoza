@@ -25,7 +25,7 @@ export const MnemozaApp = () => {
 		)
 	}
   return (
-    <div className="relative min-h-screen pb-20 md:pb-0">
+    <div className="relative min-h-screen pb-24 md:pb-0">
       {dbInitialized && appModel.currentView === 'decks' && (
         <DeckList 
           onSelectDeck={appModel.selectDeck} 
@@ -55,7 +55,7 @@ export const MnemozaApp = () => {
         />
       )}
 
-      {dbInitialized && (
+      {dbInitialized && appModel.currentView !== 'study' && (
         <MobileNavigation
           currentView={appModel.currentView}
           onNavigateHome={appModel.backToDecks}

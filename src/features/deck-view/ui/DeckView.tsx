@@ -65,7 +65,7 @@ export const DeckView: React.FC<DeckViewProps> = ({ deck, onBack, onStartStudy }
 
   return (
     <motion.div
-      className='max-w-full sm:max-w-2xl lg:max-w-4xl mx-auto p-2 sm:p-4 lg:p-6 pb-20 md:pb-6'
+      className='max-w-full sm:max-w-2xl lg:max-w-4xl mx-auto p-2 sm:p-4 lg:p-6'
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
     >

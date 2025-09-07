@@ -204,7 +204,7 @@ export const StudySession: React.FC<StudySessionProps> = ({ deck, onBack }) => {
 
       {/* Action Buttons - Fixed at bottom on mobile */}
       {!studyModel.studySessionModel.showAnswer ? (
-        <div className='fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 z-40 md:relative md:border-t-0 md:bg-transparent md:p-0'>
+        <div className='fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 pb-6 z-40 md:relative md:border-t-0 md:bg-transparent md:p-0'>
           <div className='text-center'>
             <motion.button
               onClick={studyModel.studySessionModel.showCardAnswer}
@@ -218,7 +218,7 @@ export const StudySession: React.FC<StudySessionProps> = ({ deck, onBack }) => {
         </div>
       ) : (
         <motion.div
-          className='fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 z-40 md:relative md:border-t-0 md:bg-transparent md:p-0'
+          className='fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 pb-6 z-40 md:relative md:border-t-0 md:bg-transparent md:p-0'
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
         >

@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useAppModel } from '@/entities/app'
 import { useDatabase } from '@/shared/database'
-import { MobileNavigation } from '@/shared/ui'
 
 import { StudySession } from '@/features/study-session'
 import { DeckList } from '@/features/deck-list/DeckList'
@@ -25,7 +24,7 @@ export const MnemozaApp = () => {
 		)
 	}
   return (
-    <div className="relative min-h-screen pb-24 md:pb-0">
+    <div className="relative min-h-screen">
       {dbInitialized && appModel.currentView === 'decks' && (
         <DeckList 
           onSelectDeck={appModel.selectDeck} 
@@ -55,14 +54,6 @@ export const MnemozaApp = () => {
         />
       )}
 
-      {dbInitialized && appModel.currentView !== 'study' && (
-        <MobileNavigation
-          currentView={appModel.currentView}
-          onNavigateHome={appModel.backToDecks}
-          onCreateDeck={appModel.openCreateDeckModal}
-          onShowBackup={() => setShowBackupRestore(true)}
-        />
-      )}
     </div>
   )
 }
